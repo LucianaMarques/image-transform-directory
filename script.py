@@ -24,28 +24,31 @@ def create_folders(source, destination):
     try:
         os.stat(destination_path)
     except:
-        os.stat(destination_path)
+        os.mkdir(destination_path)
 
 def apply_transformation(images, destination, transform):
     i = 1
     for img in images:
         image = cv.imread(img, 0)
     
-        # Displaying image 
-        cv.imshow('image', image)
-        cv.waitKey(0)
-        cv.destroyAllWindows()
+        # Uncomment for displaying image 
+        # cv.imshow('image', image)
+        # cv.waitKey(0)
+        # cv.destroyAllWindows()
 
         kernel = np.ones((5,5),np.uint8)
 
         if (transform == 'erosion'):
-            transf_result = cv.erode(img,kernel,iterations = 1)
+            transf_result = cv.erode(image, kernel, iterations = 1)
         else:
-            transf_result = cv.dilate(img,kernel,iterations = 1)
+            transf_result = cv.dilate(image, kernel, iterations = 1)
 
-        image_name = 'cat'+i+'.png'
-        show_image(transf_result)
-        cv.imwrite(os.path.join(destination, image_name),img)
+        image_name = 'image'+str(i)+'.png'
+
+        # Uncomment for plotting the image transformation result
+        # show_image(transf_result)
+        
+        cv.imwrite(os.path.join(destination, image_name), image)
         
         i += 1
 
@@ -62,11 +65,8 @@ def main():
     create_folders(args.org, args.dest)
 
     images = [args.org+img for img in listdir(args.org) if isfile(join(args.org, img))]
-    
-    for img in images:
-        print(img)
 
-    #apply_transformation(images, args.dest, args.transf)
+    apply_transformation(images, args.dest, args.transf)
 
 if __name__ == "__main__":
     main()
