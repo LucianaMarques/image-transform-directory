@@ -39,16 +39,16 @@ def apply_transformation(images, destination, transform):
         kernel = np.ones((5,5),np.uint8)
 
         if (transform == 'erosion'):
-            transf_result = cv.erode(image, kernel, iterations = 1)
+            transf_result = cv.erode(image, kernel, iterations = 3)
         else:
-            transf_result = cv.dilate(image, kernel, iterations = 1)
+            transf_result = cv.dilate(image, kernel, iterations = 3)
 
         image_name = 'image'+str(i)+'.png'
 
         # Uncomment for plotting the image transformation result
-        # show_image(transf_result)
+        show_image(transf_result)
         
-        cv.imwrite(os.path.join(destination, image_name), image)
+        cv.imwrite(os.path.join(destination, image_name), transf_result)
         
         i += 1
 
