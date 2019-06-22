@@ -1,9 +1,9 @@
 import numpy as np
+import os
 import cv2 as cv
 from matplotlib import pyplot as plt
 from PIL import Image
 import argparse
-import os
 from os import listdir
 from os.path import isfile, join
 
@@ -27,9 +27,9 @@ def create_folders(source, destination):
         os.mkdir(destination_path)
 
 def apply_transformation(images, destination, transform):
-    i = 1
     for img in images:
-        image = cv.imread(img, 0)
+        img_num = img[:14:15]
+        image = plt.imread(str(img), cv.IMREAD_GRAYSCALE )
     
         # Uncomment for displaying image 
         # cv.imshow('image', image)
@@ -41,16 +41,14 @@ def apply_transformation(images, destination, transform):
         if (transform == 'erosion'):
             transf_result = cv.erode(image, kernel, iterations = 3)
         else:
-            transf_result = cv.dilate(image, kernel, iterations = 3)
+            transf_result = cv.dilate(image, kernel, iterations = 1)
 
-        image_name = 'image'+str(i)+'.png'
+        image_name = 'image'+img_num+'.png'
 
         # Uncomment for plotting the image transformation result
         show_image(transf_result)
-        
         cv.imwrite(os.path.join(destination, image_name), transf_result)
         
-        i += 1
 
 def main():
     parser = argparse.ArgumentParser(description='Process images from a folder and save them to another')
