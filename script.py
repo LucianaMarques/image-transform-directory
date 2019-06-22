@@ -6,6 +6,7 @@ from PIL import Image
 import argparse
 from os import listdir
 from os.path import isfile, join
+import scipy.misc as m
 
 def show_image(image):
     plt.imshow(image, cmap = 'gray', interpolation = 'bicubic')
@@ -28,8 +29,8 @@ def create_folders(source, destination):
 
 def apply_transformation(images, destination, transform):
     for img in images:
-        img_num = img[:14:15]
-        image = plt.imread(str(img), cv.IMREAD_GRAYSCALE )
+        img_num = img[len(img)-14:len(img)-12]
+        image = m.imread(str(img), cv.IMREAD_GRAYSCALE )
     
         # Uncomment for displaying image 
         # cv.imshow('image', image)
@@ -44,11 +45,12 @@ def apply_transformation(images, destination, transform):
             transf_result = cv.dilate(image, kernel, iterations = 1)
 
         image_name = 'image'+img_num+'.png'
-
+        # print(image_name)
         # Uncomment for plotting the image transformation result
-        show_image(transf_result)
+        # show_image(transf_result)
+        print(os.path.join(destination,image_name))
         cv.imwrite(os.path.join(destination, image_name), transf_result)
-        
+        # m.imsave(transf_result, destination+image_name)
 
 def main():
     parser = argparse.ArgumentParser(description='Process images from a folder and save them to another')
